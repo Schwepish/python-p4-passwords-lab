@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
+import SignUp from "./SignUp";
+import Login from "./Login";
 import NavBar from "./NavBar";
-import Login from "../pages/Login";
-import RecipeList from "../pages/RecipeList";
-import NewRecipe from "../pages/NewRecipe";
+import Home from "./Home";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,20 +17,29 @@ function App() {
     });
   }, []);
 
-  if (!user) return <Login onLogin={setUser} />;
-
   return (
     <>
       <NavBar user={user} setUser={setUser} />
       <main>
-        <Switch>
-          <Route path="/new">
-            <NewRecipe user={user} />
-          </Route>
-          <Route path="/">
-            <RecipeList />
-          </Route>
-        </Switch>
+        {user ? (
+          <Switch>
+            <Route path="/">
+              <Home user={user}/>
+            </Route>
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/signup">
+              <SignUp setUser={setUser} />
+            </Route>
+            <Route path="/login">
+              <Login setUser={setUser} />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        )}
       </main>
     </>
   );
